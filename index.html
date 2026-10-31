@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>H'es Check Ban</title>
 <meta name="theme-color" content="#050612">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="HES CHECK">
 <style>
 :root{--tx:#eef0ff;--mut:#8a8fb0;--ln:#2a2650;--ok:#3ddc97;--bad:#ff6b81;--warn:#ffb454}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -65,12 +69,6 @@ footer{text-align:center;color:#8a8fb0;letter-spacing:.1em;font-size:13px;paddin
 .hist{left:14px;right:14px;max-height:280px;overflow:auto}
 .hist .e{justify-content:space-between}.hist .e em{font-style:normal;font-size:12px}
 .hist p{margin:0;padding:14px;color:var(--mut);text-align:center}
-.gate{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:34px;background:#000a;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-.gate[hidden]{display:none}
-.gate div{width:100%;max-width:330px;border-radius:26px;border:1px solid #2a2d52;background:#080a1af7;padding:22px 20px 16px;text-align:center;animation:in .25s}
-.gate h3{margin:0 0 8px;font:500 16px inherit;letter-spacing:.04em}.gate p{margin:0 0 18px;color:var(--mut);font-size:13px}
-.gate button{display:block;width:100%;height:44px;border-radius:15px;border:1px solid #2c2f55;background:#04050f;color:var(--tx);font:500 14px inherit;cursor:pointer}
-.gate button.p{background:#2b2570;border-color:#5a4fc9;margin-bottom:8px}
 #bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .pal{position:absolute;z-index:5;right:14px;top:50px;width:236px;border-radius:16px;border:1px solid #2a2d52;background:#0a0b1ef5;box-shadow:0 14px 40px #000b;padding:14px}
 .pal[hidden]{display:none}
@@ -90,8 +88,16 @@ footer{text-align:center;color:#8a8fb0;letter-spacing:.1em;font-size:13px;paddin
 .fld{border-color:color-mix(in srgb,var(--ac) 45%,#000);background:color-mix(in srgb,var(--ac) 9%,#000)}
 input.fld:focus{border-color:color-mix(in srgb,var(--ac) 88%,#fff)}
 .go{border-color:color-mix(in srgb,var(--ac) 40%,#000)}.go:active{background:color-mix(in srgb,var(--ac) 18%,#000)}
-.menu,.hist,.pal,.gate div{border-color:color-mix(in srgb,var(--ac) 35%,#000)}
-.gate button.p{background:color-mix(in srgb,var(--ac) 45%,#000);border-color:var(--ac)}
+.menu,.hist,.pal{border-color:color-mix(in srgb,var(--ac) 35%,#000)}
+.md{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:34px;background:#000b}
+.md[hidden]{display:none}
+.mc{width:100%;max-width:292px;border-radius:28px;background:#fff;color:#111;padding:22px 20px 20px;text-align:center;box-shadow:0 18px 50px #000a;animation:in .25s ease}
+.mc h3{margin:2px 0 10px;font:700 19px/1.2 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#0b0b0b}
+.mc p{margin:0;font:400 13.5px/1.5 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#444}
+.mc .ar{display:block;margin:8px auto 14px;width:22px;height:22px;color:#f5b800;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.mc .mb{display:block;width:100%;height:44px;border:0;border-radius:999px;background:#1673e0;color:#fff;font:700 16px system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;box-shadow:0 5px 14px #1673e055;cursor:pointer}
+.mc .mb:active{background:#125fba}
+.mc .ms{display:block;width:100%;height:36px;margin-top:8px;border:0;background:none;color:#777;font:500 13.5px system-ui,sans-serif;cursor:pointer}
 .toast{background:color-mix(in srgb,var(--ac) 22%,#000);border-color:color-mix(in srgb,var(--ac) 50%,#000)}
 .jp{color:color-mix(in srgb,var(--ac) 45%,#6b6f90)}
 </style>
@@ -107,6 +113,8 @@ input.fld:focus{border-color:color-mix(in srgb,var(--ac) 88%,#fff)}
   <div class="menu" id="menu" hidden>
    <button id="mbg"><i data-ic="image"></i><span data-t="bgChange"></span></button>
    <button id="mcl"><i data-ic="palette"></i><span data-t="colChange"></span></button>
+   <button id="min" hidden><i data-ic="install"></i><span data-t="insMenu"></span></button>
+   <button id="mfs" hidden><i data-ic="expand"></i><span data-t="fsMenu"></span></button>
    <button id="mrs"><i data-ic="reset"></i><span data-t="bgReset"></span></button>
    <button id="mch"><i data-ic="trash"></i><span data-t="histClear"></span></button>
   </div>
@@ -122,7 +130,7 @@ input.fld:focus{border-color:color-mix(in srgb,var(--ac) 88%,#fff)}
  </div>
 </main>
 <footer>⟂ · © H'es Check · ⟂</footer>
-<div class="gate" id="gate" hidden><div><h3 data-t="gTitle"></h3><p data-t="gText"></p><button class="p" id="gok" data-t="gOk"></button><button id="gno" data-t="gNo"></button></div></div>
+<div class="md" id="md" hidden><div class="mc"><h3 id="mt"></h3><p id="mp"></p><svg class="ar" viewBox="0 0 24 24"><path d="M12 4v15M6 13.5l6 6 6-6"/></svg><button class="mb" id="mbtn"></button><button class="ms" id="msk" hidden></button></div></div>
 <input type="file" id="file" accept="image/*,video/*" hidden>
 <script>
 // Adresse du site H'es shop (celui qui contient /api/checkban). Change-la ici si le domaine change.
@@ -134,17 +142,17 @@ const L={fr:{ph:"pseudo H'es shop",bgChange:'Fond (image ou vidéo)',bgReset:'R�
  nban:'Compte en règle',nbanp:'Aucun ban ni suspension.',nnf:'Compte introuvable',nnfp:"Aucun compte H'es shop avec ce pseudo.",
  npb:'Ban définitif',npbp:'Ce compte ne reviendra pas. Aucun retour prévu.',nsu:'Suspension temporaire',nsup:'Le compte revient automatiquement : ',
  d:'j',h:'h',m:'min',bad:'Pseudo invalide (3–20 : lettres, chiffres, _ . -)',net:"Impossible de joindre H'es shop.",many:'Trop de vérifications, attends une minute.',
- copied:'Copié',gTitle:'Autoriser le presse-papiers ?',gText:'Autofill colle le pseudo que tu as copié. Ton navigateur va te demander la permission : appuie sur Autoriser.',gOk:'Autoriser',gNo:'Plus tard',bgOk:'Fond changé',bgBad:'Image impossible à charger',pasteBad:'Presse-papiers indisponible',eHttp:'Le site doit être ouvert en https pour lire le presse-papiers',eUns:'Ton navigateur bloque Autofill : appui long dans le champ puis Coller',eDen:'Permission refusée : autorise le presse-papiers via le cadenas du navigateur, ou appui long puis Coller',eInv:"Le texte copié n'est pas un pseudo valide",eEmp:'Presse-papiers vide : copie un pseudo d’abord',bgFull:'Image trop lourde pour être gardée'},
+ copied:'Copié',fTitle:'Abonne-toi à la chaîne WhatsApp',fText:'Avant de continuer, abonne-toi à notre chaîne WhatsApp. Appuie sur le bouton ci-dessous pour continuer.',fBtn:"S’abonner",insMenu:"Installer l'appli",insTitle:"Installer H'ES CHECK",insText:'Ouvre le menu ⋮ de ton navigateur puis « Ajouter à l’écran d’accueil ». Le site s’ouvrira comme une appli, sans barre du navigateur.',insBtn:'OK',fsMenu:'Mode plein écran',fsBad:'Plein écran impossible ici',gTitle:'Autoriser le presse-papiers ?',gText:'Autofill colle le pseudo que tu as copié. Ton navigateur va te demander la permission : appuie sur Autoriser.',gOk:'Autoriser',gNo:'Plus tard',bgOk:'Fond changé',bgBad:'Image impossible à charger',pasteBad:'Presse-papiers indisponible',eHttp:'Le site doit être ouvert en https pour lire le presse-papiers',eUns:'Ton navigateur bloque Autofill : appui long dans le champ puis Coller',eDen:'Permission refusée : autorise le presse-papiers via le cadenas du navigateur, ou appui long puis Coller',eInv:"Le texte copié n'est pas un pseudo valide",eEmp:'Presse-papiers vide : copie un pseudo d’abord',bgFull:'Image trop lourde pour être gardée'},
  en:{ph:"H'es shop username",bgChange:'Background (image or video)',bgReset:'Reset background & color',colChange:'Interface color',colCustom:'Custom color',vidBig:'Video too large (max 60 MB)',vidBad:'Could not play that video',histClear:'Clear history',hist0:'No searches yet',
  clean:'NO BAN',ban:'BANNED',sus:'SUSPENDED',nf:'NOT FOUND',user:'Username',type:'Status',viol:'Violation',at:'Date',ret:'Returns',
  perma:'perma_ban',susT:'spam_suspension',okT:'active',nfT:'not_found',never:'Never',none:'—',unk:'Not specified',
  nban:'Account in good standing',nbanp:'No ban or suspension.',nnf:'Account not found',nnfp:"No H'es shop account with this username.",
  npb:'Permanent ban',npbp:'This account will not come back. No return planned.',nsu:'Temporary suspension',nsup:'The account returns automatically: ',
  d:'d',h:'h',m:'min',bad:'Invalid username (3–20: letters, digits, _ . -)',net:"Could not reach H'es shop.",many:'Too many checks, wait a minute.',
- copied:'Copied',gTitle:'Allow clipboard access?',gText:'Autofill pastes the username you copied. Your browser will ask for permission: tap Allow.',gOk:'Allow',gNo:'Not now',bgOk:'Background changed',bgBad:'Could not load that image',pasteBad:'Clipboard unavailable',eHttp:'The site must be opened over https to read the clipboard',eUns:'Your browser blocks Autofill: long-press the field then Paste',eDen:'Permission denied: allow the clipboard via the browser padlock, or long-press then Paste',eInv:'The copied text is not a valid username',eEmp:'Clipboard is empty: copy a username first',bgFull:'Image too large to be saved'}};
+ copied:'Copied',fTitle:'Follow our WhatsApp channel',fText:'Before you continue, follow our WhatsApp channel. Tap the button below to continue.',fBtn:'Follow',insMenu:'Install the app',insTitle:"Install H'ES CHECK",insText:'Open your browser menu ⋮ then “Add to Home screen”. The site will open like an app, without the browser bar.',insBtn:'OK',fsMenu:'Full screen mode',fsBad:'Full screen not available here',gTitle:'Allow clipboard access?',gText:'Autofill pastes the username you copied. Your browser will ask for permission: tap Allow.',gOk:'Allow',gNo:'Not now',bgOk:'Background changed',bgBad:'Could not load that image',pasteBad:'Clipboard unavailable',eHttp:'The site must be opened over https to read the clipboard',eUns:'Your browser blocks Autofill: long-press the field then Paste',eDen:'Permission denied: allow the clipboard via the browser padlock, or long-press then Paste',eInv:'The copied text is not a valid username',eEmp:'Clipboard is empty: copy a username first',bgFull:'Image too large to be saved'}};
 const t=L[(navigator.language||'fr').startsWith('fr')?'fr':'en'];
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const IC={ban:'<circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',check:'<circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16 9.5"/>',q:'<circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.6 2.2c-.8.4-1.2 1-1.2 1.9M12 17v.01"/>',image:'<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4 18 5-5 4 4 3-3 4 4"/>',reset:'<path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/>',trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',palette:'<path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.8 1.8-1.6 0-1.3-1-1.6-1-2.7 0-.9.7-1.5 1.6-1.5H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3Z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="14.5" cy="7" r="1"/>',clip:'<rect x="6" y="4" width="12" height="17" rx="2.5"/><path d="M9 4h6v3H9z"/>'};
+const IC={ban:'<circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',check:'<circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16 9.5"/>',q:'<circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.6 2.2c-.8.4-1.2 1-1.2 1.9M12 17v.01"/>',image:'<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4 18 5-5 4 4 3-3 4 4"/>',reset:'<path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/>',trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',palette:'<path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.8 1.8-1.6 0-1.3-1-1.6-1-2.7 0-.9.7-1.5 1.6-1.5H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3Z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="14.5" cy="7" r="1"/>',install:'<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>',expand:'<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',clip:'<rect x="6" y="4" width="12" height="17" rx="2.5"/><path d="M9 4h6v3H9z"/>'};
 const ic=n=>`<svg class="ic" viewBox="0 0 24 24">${IC[n]}</svg>`;
 document.querySelectorAll('i[data-ic]').forEach(e=>e.outerHTML=ic(e.dataset.ic));
 const p2=n=>String(n).padStart(2,'0'),fd=ms=>{const d=new Date(ms);return`${p2(d.getDate())}.${p2(d.getMonth()+1)}.${String(d.getFullYear()).slice(2)} · ${p2(d.getHours())}:${p2(d.getMinutes())}`};
@@ -201,6 +209,8 @@ function pushHist(u,s){const h=store.get('hesHist',[]).filter(x=>x.u!==u);h.unsh
 const okName=v=>/^[a-z0-9_.-]{3,20}$/.test(v);
 const clean=v=>String(v).trim().replace(/^@/,'').toLowerCase();
 async function pasteName(){   // → {v} si OK, sinon {e:'code'} pour dire POURQUOI ça ne marche pas
+ const NC=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Clipboard;   // dans l'APK : presse-papiers natif, sans blocage
+ if(NC){try{const x=clean((await NC.read()).value||'');return x?okName(x)?{v:x}:{e:'eInv'}:{e:'eEmp'}}catch{return{e:'eUns'}}}
  if(!window.isSecureContext)return{e:'eHttp'};
  if(!navigator.clipboard||!navigator.clipboard.readText)return{e:'eUns'};
  try{const x=clean(await navigator.clipboard.readText());return x?okName(x)?{v:x}:{e:'eInv'}:{e:'eEmp'}}
@@ -212,15 +222,34 @@ $('#af').onclick=autofill;
 /* Collage manuel (appui long > Coller) : nettoie le pseudo et lance la vérification */
 $('#u').addEventListener('paste',()=>setTimeout(()=>{const v=clean($('#u').value);$('#u').value=v;if(okName(v))check(v)},0));
 $('#u').addEventListener('input',()=>{const v=$('#u').value,c=v.replace(/^@/,'').toLowerCase();if(c!==v)$('#u').value=c});
-/* Première visite : on demande d'abord l'autorisation (le navigateur n'affiche sa demande qu'après un appui) */
-(async()=>{
- if(store.get('hesClip',''))return;
+/* ---- fenêtre claire (style « Update Now ») ---- */
+function ask(o){const m=$('#md'),b=$('#mbtn'),k=$('#msk');$('#mt').textContent=o.title;$('#mp').textContent=o.text;b.textContent=o.btn;
+ k.hidden=!o.skip;k.textContent=o.skip||'';m.hidden=false;
+ b.onclick=()=>{m.hidden=true;o.ok&&o.ok()};k.onclick=()=>{m.hidden=true;o.no&&o.no()}}
+const CHANNEL='https://whatsapp.com/channel/0029Vb7Ibg5002T79MWH2r1p';
+const HAS_NC=()=>!!(window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Clipboard);
+/* 1) abonnement obligatoire au premier lancement (se ferme seulement après un appui sur le bouton) */
+function followGate(){if(store.get('hesFollow',''))return clipGate();
+ ask({title:t.fTitle,text:t.fText,btn:t.fBtn,ok:()=>{store.set('hesFollow','1');window.open(CHANNEL,'_blank','noopener');setTimeout(clipGate,700)}})}
+/* 2) autorisation du presse-papiers (le navigateur n'affiche sa demande qu'après un appui) */
+async function clipGate(){
+ if(store.get('hesClip','')||HAS_NC())return;
  try{const p=await navigator.permissions.query({name:'clipboard-read'});if(p.state!=='prompt'){store.set('hesClip','1');return}}catch{}
  if(!navigator.clipboard||!navigator.clipboard.readText){store.set('hesClip','1');return}
- const g=$('#gate');g.hidden=false;
- $('#gno').onclick=()=>{store.set('hesClip','no');g.hidden=true};
- $('#gok').onclick=async()=>{g.hidden=true;store.set('hesClip','1');const r=await pasteName();if(r.v){$('#u').value=r.v;check(r.v)}else if(r.e!=='eInv'&&r.e!=='eEmp')toast(t[r.e])};
-})();
+ ask({title:t.gTitle,text:t.gText,btn:t.gOk,skip:t.gNo,
+  no:()=>store.set('hesClip','no'),
+  ok:async()=>{store.set('hesClip','1');const r=await pasteName();if(r.v){$('#u').value=r.v;check(r.v)}else if(r.e!=='eInv'&&r.e!=='eEmp')toast(t[r.e])}})}
+
+/* ---- mode « appli » dans le navigateur : installation (PWA) + plein écran ---- */
+const STANDALONE=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true||!!window.Capacitor;
+let dip=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();dip=e});
+if(!STANDALONE){$('#min').hidden=false;if(document.fullscreenEnabled)$('#mfs').hidden=false}
+$('#min').onclick=()=>{closeAll();if(dip){dip.prompt();dip=null}else ask({title:t.insTitle,text:t.insText,btn:t.insBtn})};
+async function goFs(){try{await document.documentElement.requestFullscreen({navigationUI:'hide'});store.set('hesFs',1)}catch{toast(t.fsBad)}}
+$('#mfs').onclick=()=>{closeAll();if(document.fullscreenElement){document.exitFullscreen();store.set('hesFs',0)}else goFs()};
+if(!STANDALONE&&store.get('hesFs',0))document.addEventListener('pointerdown',()=>{if(!document.fullscreenElement)goFs()},{once:true});
+if('serviceWorker' in navigator&&!window.Capacitor&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+followGate();
 
 /* ---- vérification ---- */
 const left=ms=>{let s=Math.max(0,Math.round(ms/60000)),d=Math.floor(s/1440),h=Math.floor(s%1440/60),m=s%60;return d?`${d}${t.d} ${h}${t.h}`:h?`${h}${t.h} ${m}${t.m}`:`${Math.max(m,1)}${t.m}`};
