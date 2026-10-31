@@ -12,7 +12,7 @@
 <style>
 :root{--tx:#eef0ff;--mut:#8a8fb0;--ln:#2a2650;--ok:#3ddc97;--bad:#ff6b81;--warn:#ffb454}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;background:#050612}
+html,body{margin:0;min-height:100%}html{background:#050612}   /* le fond du body masquait #bg (image/vidéo) : il doit rester transparent */
 body{color:var(--tx);font:300 14px/1.4 'Outfit','Segoe UI',system-ui,-apple-system,sans-serif;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
 #bg{position:fixed;inset:0;z-index:-2;background:radial-gradient(120% 80% at 50% 0,#0a4aa0 0,#062a63 38%,#050a1f 100%) center/cover no-repeat}
 #bg::after{content:"";position:absolute;inset:0;background:linear-gradient(#0008,#0006 40%,#000b)}
@@ -131,7 +131,7 @@ input.fld:focus{border-color:color-mix(in srgb,var(--ac) 88%,#fff)}
 </main>
 <footer>⟂ · © H'es Check · ⟂</footer>
 <div class="md" id="md" hidden><div class="mc"><h3 id="mt"></h3><p id="mp"></p><svg class="ar" viewBox="0 0 24 24"><path d="M12 4v15M6 13.5l6 6 6-6"/></svg><button class="mb" id="mbtn"></button><button class="ms" id="msk" hidden></button></div></div>
-<input type="file" id="file" accept="image/*,video/*" hidden>
+<input type="file" id="file" accept="image/*,video/*" style="position:fixed;left:-9999px;width:1px;height:1px;opacity:0" tabindex="-1">
 <script>
 // Adresse du site H'es shop (celui qui contient /api/checkban). Change-la ici si le domaine change.
 const API='https://he-s-shop-v2.skyhost.tech';
